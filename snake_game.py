@@ -85,7 +85,7 @@ def draw_game_over(score):
     overlay.set_alpha(200)
     overlay.fill(BLACK)
     screen.blit(overlay, (0, 0))
-    game_over_text = font.render("HE IS COMING, HE FEELS NO FEAR, ONLY YEET", True, RED)
+    game_over_text = font.render("This is the end......", True, RED)
     score_text = font.render(f"Final Score: {score}", True, WHITE)
     restart_text = small_font.render("Press R to restart or ESC to quit", True, WHITE)
     screen.blit(game_over_text, game_over_text.get_rect(center=(WIDTH // 20, HEIGHT // 20 - 400)))
