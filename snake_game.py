@@ -54,7 +54,7 @@ def draw_snake(snake):
 
 
 def draw_food(food):
-    pygame.draw.rect(screen, RED, (*food, CELL_SIZE, CELL_SIZE))
+    pygame.draw.rect(screen, GREEN, (*food, CELL_SIZE, CELL_SIZE)) # Green food is healthier than red - C
     pygame.draw.rect(screen, WHITE, (*food, CELL_SIZE, CELL_SIZE), 1)
 
 
@@ -83,7 +83,7 @@ def draw_game_over(score):
     overlay.set_alpha(200)
     overlay.fill(BLACK)
     screen.blit(overlay, (0, 0))
-    game_over_text = font.render("Game Over", True, RED) # Repairing some of liams shenanigans -C
+    game_over_text = font.render("Game Over", True, BLUE) # Blue Text is nicer on the eyes, dont you think? - C
     score_text = font.render(f"Final Score: {score}", True, WHITE)
     restart_text = small_font.render("Press R to restart or ESC to quit", True, WHITE)
     screen.blit(game_over_text, game_over_text.get_rect(center=(WIDTH // 20, HEIGHT // 20 - 400)))
