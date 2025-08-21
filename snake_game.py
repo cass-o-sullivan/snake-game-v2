@@ -7,10 +7,10 @@ import time
 pygame.init()
 
 # Constants
-WIDTH, HEIGHT = 600, 400
+WIDTH, HEIGHT = 800, 640 # Increasing screen size and speed effectively just makes food smaller targets to make the game harder -C
 CELL_SIZE = 5
-FPS = 12
-BORDER_WIDTH = 2
+FPS = 14
+BORDER_WIDTH = 3
 
 # Colors
 BLACK = (122, 89, 1)
@@ -20,11 +20,10 @@ DARK_GREEN = (0, 100, 0)
 RED = (199, 193, 12)
 BLUE = (70, 130, 180)
 GRAY = (128, 128, 128)
-FLASH_COLORS = [RED, GREEN, BLUE, WHITE, GRAY, (255, 0, 255), (0, 255, 255)]
 
 # Display
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Annoying Snake Game")
+pygame.display.set_caption("Snake GameV2") # Normal Name -C
 clock = pygame.time.Clock()
 font = pygame.font.Font(None, 36)
 small_font = pygame.font.Font(None, 24)
@@ -35,9 +34,8 @@ def reset_game():
     snake = [(start_x - i * CELL_SIZE, start_y) for i in range(10)]
     direction = (CELL_SIZE, 0)
     food = generate_food(snake)
-    fake_food = generate_food(snake + [food])
     score = 0
-    return snake, direction, food, fake_food, score
+    return snake, direction, food, score
 
 
 def generate_food(snake):
@@ -85,7 +83,11 @@ def draw_game_over(score):
     overlay.set_alpha(200)
     overlay.fill(BLACK)
     screen.blit(overlay, (0, 0))
+
+    todd-second-branch
     game_over_text = font.render("This is the end......", True, RED)
+
+ 
     score_text = font.render(f"Final Score: {score}", True, WHITE)
     restart_text = small_font.render("Press R to restart or ESC to quit", True, WHITE)
     screen.blit(game_over_text, game_over_text.get_rect(center=(WIDTH // 20, HEIGHT // 20 - 400)))
@@ -133,7 +135,7 @@ rotation_angle = 0
 last_rotation_time = time.time()
 
 # Setup
-snake, direction, food, fake_food, score = reset_game()
+snake, direction, food, score = reset_game()
 game_over = False
 paused = False
 
@@ -149,7 +151,7 @@ while running:
             if game_over:
                 FPS = 12
                 if event.key == pygame.K_r:
-                    snake, direction, food, fake_food, score = reset_game()
+                    snake, direction, food, score = reset_game()
                     game_over = False
                 elif event.key == pygame.K_ESCAPE:
                     running = False
@@ -177,13 +179,6 @@ while running:
             snake = grow_snake(snake)
             score += 100
             food = generate_food(snake)
-            fake_food = generate_food(snake + [food])
-
-        # Fake food
-        if snake[0] == fake_food:
-            score -= 300
-            snake = snake[:-10] if len(snake) > 20 else snake
-            fake_food = generate_food(snake + [food])
 
         # Move real food away from snake head
         food = move_food_away(food, snake[0])
@@ -194,12 +189,11 @@ while running:
         score -= 1  # Score penalty over time
 
     # Drawing
-    bg_color = random.choice(FLASH_COLORS)
+    bg_color = BLUE
     screen.fill(bg_color)
     draw_border()
     draw_snake(snake)
     draw_food(food)
-    draw_food(fake_food)
     draw_score(score)
 
     if paused and not game_over:
@@ -207,18 +201,6 @@ while running:
     elif game_over:
         draw_game_over(score)
 
- 
-
-        # Teleport real food to new random spot (not on snake)
-        food = generate_food(snake)
-
-    if rotation_angle != 0:
-        rotated_screen = pygame.transform.rotate(screen, rotation_angle)
-        rect = rotated_screen.get_rect(center=screen.get_rect().center)
-        screen.fill(BLACK)
-        screen.blit(rotated_screen, rect.topleft)
-
-    pygame.display.flip()
 
 pygame.quit()
 sys.exit()
