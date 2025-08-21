@@ -7,10 +7,10 @@ import time
 pygame.init()
 
 # Constants
-WIDTH, HEIGHT = 800, 600    # Bigger Screen (Rob)
-CELL_SIZE = 10              # Bigger Snake and Food (Rob)
-FPS = 12
-BORDER_WIDTH = 2
+WIDTH, HEIGHT = 800, 640 # Increasing screen size and speed effectively just makes food smaller targets to make the game harder -C
+CELL_SIZE = 5
+FPS = 14
+BORDER_WIDTH = 3
 
 # Colors
 BLACK = (122, 89, 1)
@@ -20,11 +20,10 @@ DARK_GREEN = (0, 100, 0)
 RED = (199, 193, 12)
 BLUE = (70, 130, 180)
 GRAY = (128, 128, 128)
-# FLASH_COLORS = [RED, GREEN, BLUE, WHITE, GRAY, (255, 0, 255), (0, 255, 255)]  - Removed (Rob)
 
 # Display
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Snake Game V2")     # Changed name (Rob)
+pygame.display.set_caption("Snake GameV2") # Normal Name -C
 clock = pygame.time.Clock()
 font = pygame.font.Font(None, 36)
 small_font = pygame.font.Font(None, 24)
@@ -35,9 +34,8 @@ def reset_game():
     snake = [(start_x - i * CELL_SIZE, start_y) for i in range(10)]
     direction = (CELL_SIZE, 0)
     food = generate_food(snake)
-    # fake_food = generate_food(snake + [food])     Removed all instances of fake food (Rob)
     score = 0
-    return snake, direction, food, score, # fake_food
+    return snake, direction, food, score
 
 
 def generate_food(snake):
@@ -56,7 +54,7 @@ def draw_snake(snake):
 
 
 def draw_food(food):
-    pygame.draw.rect(screen, RED, (*food, CELL_SIZE, CELL_SIZE))
+    pygame.draw.rect(screen, GREEN, (*food, CELL_SIZE, CELL_SIZE)) # Green food is healthier than red - C
     pygame.draw.rect(screen, WHITE, (*food, CELL_SIZE, CELL_SIZE), 1)
 
 
@@ -85,7 +83,7 @@ def draw_game_over(score):
     overlay.set_alpha(200)
     overlay.fill(BLACK)
     screen.blit(overlay, (0, 0))
-    game_over_text = font.render("Game Over", True, RED)    # Changed to be "normal" (Rob)
+    game_over_text = font.render("This is the end......", True, BLUE)
     score_text = font.render(f"Final Score: {score}", True, WHITE)
     restart_text = small_font.render("Press R to restart or ESC to quit", True, WHITE)
     screen.blit(game_over_text, game_over_text.get_rect(center=(WIDTH // 20, HEIGHT // 20 - 400)))
@@ -99,7 +97,7 @@ def move_snake(snake, direction):
     return [new_head] + snake[:-1]
 
 
-def grow_snake(snake, segments=5):  # Reduced snake growth (Rob)
+def grow_snake(snake, segments=5):      # shrank the growth for a longer game - Rob
     for _ in range(segments):
         snake.append(snake[-1])
     return snake
@@ -133,7 +131,7 @@ rotation_angle = 0
 last_rotation_time = time.time()
 
 # Setup
-snake, direction, food, score = reset_game() # fake_food
+snake, direction, food, score = reset_game()
 game_over = False
 paused = False
 
@@ -149,7 +147,7 @@ while running:
             if game_over:
                 FPS = 12
                 if event.key == pygame.K_r:
-                    snake, direction, food, score = reset_game() # fake_food
+                    snake, direction, food, score = reset_game()
                     game_over = False
                 elif event.key == pygame.K_ESCAPE:
                     running = False
@@ -177,21 +175,14 @@ while running:
             snake = grow_snake(snake)
             score += 100
             food = generate_food(snake)
-            # fake_food = generate_food(snake + [food])
-
-        # # Fake food
-        # if snake[0] == fake_food:
-        #     score -= 300
-        #     snake = snake[:-10] if len(snake) > 20 else snake
-        #     fake_food = generate_food(snake + [food])
 
         # Move real food away from snake head
-        # food = move_food_away(food, snake[0])     - Keeps food in spot (Rob)
+        # food = move_food_away(food, snake[0])     Stopped food from moving - Rob
 
         if check_collision(snake):
             game_over = True
 
-        # score -= 1  # Score penalty over time  - Removed (Rob)
+        # score -= 1  # Score penalty over time     Removed for actual game progress - Rob
 
     # Drawing
     bg_color = BLUE
@@ -199,30 +190,13 @@ while running:
     draw_border()
     draw_snake(snake)
     draw_food(food)
-    # draw_food(fake_food)
     draw_score(score)
 
     if paused and not game_over:
         draw_pause_screen()
     elif game_over:
         draw_game_over(score)
-
-    # Random screen rotation every second           Removed as was annoying (Rob)
-    # current_time = time.time()
-    # if current_time - last_rotation_time >= 1:
-    #     rotation_angle = random.randint(-360, 360)
-    #     last_rotation_time = current_time
-
-        # Teleport real food to new random spot (not on snake)
-        food = generate_food(snake)
-
-    if rotation_angle != 0:
-        rotated_screen = pygame.transform.rotate(screen, rotation_angle)
-        rect = rotated_screen.get_rect(center=screen.get_rect().center)
-        screen.fill(BLACK)
-        screen.blit(rotated_screen, rect.topleft)
-
-    pygame.display.flip()
+    pygame.display.update()
 
 pygame.quit()
 sys.exit()
