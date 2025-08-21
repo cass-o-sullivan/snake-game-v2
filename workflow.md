@@ -1,1 +1,2 @@
 A better workflow could have prevented merge conflicts by encouraging frequent integration of changes, such as regularly merging or rebasing from the main branch, making small and frequent commits, maintaining clear communication among team members, and using a consistent branching strategy. These practices reduce divergence and overlapping work, minimizing conflicts.
+- Rob
