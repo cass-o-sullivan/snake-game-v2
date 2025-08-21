@@ -185,7 +185,7 @@ while running:
         score -= 1  # Score penalty over time
 
     # Drawing
-    bg_color = BLUE
+    bg_color = RED
     screen.fill(bg_color)
     draw_border()
     draw_snake(snake)
