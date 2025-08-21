@@ -207,11 +207,7 @@ while running:
     elif game_over:
         draw_game_over(score)
 
-    # Random screen rotation every second
-    current_time = time.time()
-    if current_time - last_rotation_time >= 1:
-        rotation_angle = random.randint(-360, 360)
-        last_rotation_time = current_time
+ 
 
         # Teleport real food to new random spot (not on snake)
         food = generate_food(snake)
