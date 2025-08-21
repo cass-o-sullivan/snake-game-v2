@@ -97,7 +97,7 @@ def move_snake(snake, direction):
     return [new_head] + snake[:-1]
 
 
-def grow_snake(snake, segments=15):
+def grow_snake(snake, segments=5):      # shrank the growth for a longer game - Rob
     for _ in range(segments):
         snake.append(snake[-1])
     return snake
@@ -177,15 +177,15 @@ while running:
             food = generate_food(snake)
 
         # Move real food away from snake head
-        food = move_food_away(food, snake[0])
+        # food = move_food_away(food, snake[0])     Stopped food from moving - Rob
 
         if check_collision(snake):
             game_over = True
 
-        score -= 1  # Score penalty over time
+        # score -= 1  # Score penalty over time     Removed for actual game progress - Rob
 
     # Drawing
-    bg_color = RED
+    bg_color = BLUE
     screen.fill(bg_color)
     draw_border()
     draw_snake(snake)
