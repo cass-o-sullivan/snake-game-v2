@@ -196,7 +196,7 @@ while running:
         draw_pause_screen()
     elif game_over:
         draw_game_over(score)
-
+    pygame.display.update()
 
 pygame.quit()
 sys.exit()
