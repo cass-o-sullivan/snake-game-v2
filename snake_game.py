@@ -83,7 +83,6 @@ def draw_game_over(score):
     overlay.set_alpha(200)
     overlay.fill(BLACK)
     screen.blit(overlay, (0, 0))
-    todd-second-branch
     game_over_text = font.render("This is the end......", True, BLUE)
     score_text = font.render(f"Final Score: {score}", True, WHITE)
     restart_text = small_font.render("Press R to restart or ESC to quit", True, WHITE)
